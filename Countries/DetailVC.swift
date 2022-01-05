@@ -30,6 +30,14 @@ class DetailVC: UIViewController {
             savedButton.image = UIImage(named: "unsaved")
         }
         countryImageView.isUserInteractionEnabled = false
+        if #available(iOS 15.0, *) {
+            var conf = UIButton.Configuration.plain()
+            conf.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+            detailButton.configuration = conf
+        } else {
+            detailButton.contentEdgeInsets.right = 10
+            detailButton.contentEdgeInsets.left = 10
+        }
     }
 
     @IBAction func backButtonAction(_ sender: Any) {

@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
 
-        if #available(iOS 15.0, *) {
+        
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = .systemOrange
@@ -39,13 +39,10 @@ class ViewController: UIViewController {
             appearance.stackedLayoutAppearance = tabBarItemAppearance
 
             tabBarController?.tabBar.standardAppearance = appearance
+        if #available(iOS 15.0, *) {
             tabBarController?.tabBar.scrollEdgeAppearance = appearance
-
-        } else {
-            tabBarController?.tabBar.unselectedItemTintColor = .black
-            tabBarController?.tabBar.tintColor = .white
-            tabBarController?.tabBar.backgroundColor = .systemOrange
         }
+
 
         getCountries()
     }
