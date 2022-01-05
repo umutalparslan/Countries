@@ -48,7 +48,7 @@ extension SavedCountriesVC: UITableViewDelegate, UITableViewDataSource {
 
         cell.actionBlock = {
             cell.saveButton.setImage(UIImage(named: "unsaved"), for: .normal)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.async {
                 self.removeUnsaved(section: indexPath.section, row: cell.saveButton.tag)
             }
             if let index = SCArray.name.firstIndex(of: self.name[indexPath.row]) {
