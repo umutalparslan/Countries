@@ -14,15 +14,15 @@ class DetailVC: UIViewController {
     var code: String?
     var wikiDataId: String?
     var name: String?
-    @IBOutlet weak var countryImageView: UIView!
+    @IBOutlet var countryImageView: UIView!
     @IBOutlet var ccLabel: UILabel!
     @IBOutlet var detailButton: UIButton!
-    @IBOutlet weak var savedButton: UIBarButtonItem!
-    
+    @IBOutlet var savedButton: UIBarButtonItem!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         ccLabel.text = code
-        self.title = name ?? "Details"
+        title = name ?? "Details"
         getCountryDetails(countryCode: code ?? "error")
         if SCArray.name.contains(name ?? "") {
             savedButton.image = UIImage(named: "saved")
@@ -31,16 +31,17 @@ class DetailVC: UIViewController {
         }
         countryImageView.isUserInteractionEnabled = false
     }
+
     @IBAction func backButtonAction(_ sender: Any) {
         let transition: CATransition = CATransition()
         transition.duration = 0.4
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.default)
         transition.type = CATransitionType.reveal
         transition.subtype = CATransitionSubtype.fromLeft
-        self.view.window!.layer.add(transition, forKey: nil)
-        self.dismiss(animated: false, completion: nil)
+        view.window!.layer.add(transition, forKey: nil)
+        dismiss(animated: false, completion: nil)
     }
-    
+
     @IBAction func detailButtonAction(_ sender: Any) {
         if wikiDataId != nil || wikiDataId != "" {
             if let wdi = wikiDataId {
@@ -51,7 +52,7 @@ class DetailVC: UIViewController {
             }
         }
     }
-    
+
     @IBAction func savedButtonAction(_ sender: Any) {
         if savedButton.image == UIImage(named: "unsaved") {
             savedButton.image = UIImage(named: "saved")
@@ -71,7 +72,6 @@ class DetailVC: UIViewController {
         UserDefaults.standard.set(SCArray.code, forKey: "savedCountriesCode")
         UserDefaults.standard.synchronize()
     }
-    
 
     func getCountryDetails(countryCode: String) {
         if countryCode != "error" && countryCode != "" {
@@ -92,8 +92,8 @@ class DetailVC: UIViewController {
                         if flagImageUri != nil || flagImageUri != "" {
                             if let fiu = flagImageUri {
                                 var svgUrlRemote: URL {
-                                        let path = fiu
-                                        return URL(string: path)!
+                                    let path = fiu
+                                    return URL(string: path)!
                                 }
                                 let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: self.countryImageView.frame.width, height: self.countryImageView.frame.height))
                                 let request = URLRequest(url: svgUrlRemote)

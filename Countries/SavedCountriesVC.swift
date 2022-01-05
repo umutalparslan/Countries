@@ -45,7 +45,7 @@ extension SavedCountriesVC: UITableViewDelegate, UITableViewDataSource {
         cell.saveButton.setImage(UIImage(named: "saved"), for: .normal)
         cell.saveButton.tag = indexPath.row
         cell.saveButton.setTitle("", for: .normal)
-        
+
         cell.actionBlock = {
             cell.saveButton.setImage(UIImage(named: "unsaved"), for: .normal)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -73,7 +73,7 @@ extension SavedCountriesVC: UITableViewDelegate, UITableViewDataSource {
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true, completion: nil)
     }
-    
+
     func removeUnsaved(section: Int, row: Int) {
         tableView.beginUpdates()
         tableView.numberOfRows(inSection: section)
@@ -81,6 +81,4 @@ extension SavedCountriesVC: UITableViewDelegate, UITableViewDataSource {
         tableView.endUpdates()
         tableView.reloadData()
     }
-    
-    
 }

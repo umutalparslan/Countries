@@ -8,18 +8,17 @@
 import UIKit
 
 class SavedCountriesCell: UITableViewCell {
+    @IBOutlet var countryView: UIView!
+    @IBOutlet var countryName: UILabel!
+    @IBOutlet var saveButton: UIButton!
 
-    @IBOutlet weak var countryView: UIView!
-    @IBOutlet weak var countryName: UILabel!
-    @IBOutlet weak var saveButton: UIButton!
-    
     var actionBlock: (() -> Void)?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
     @IBAction func buttonAction(_ sender: Any) {
         actionBlock?()
     }
@@ -29,5 +28,4 @@ class SavedCountriesCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

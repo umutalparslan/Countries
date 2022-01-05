@@ -10,7 +10,7 @@ import Foundation
 class SCArray: NSObject {
     public static var name = [String]()
     public static var code = [String]()
-    
+
     public static func userDefaultsSettings() {
         UserDefaults.standard.removeObject(forKey: "savedCountriesName")
         UserDefaults.standard.removeObject(forKey: "savedCountriesCode")
