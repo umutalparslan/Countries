@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
 
     public static var host = "wft-geo-db.p.rapidapi.com"
-    public static var key = "40ddce588bmsh7362e91f655ce13p1f6038jsnd3506b4fb4a2"
+    public static var key = "YOUR_RAPIDAPI_KEY"
     public static var uri = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries"
 
     var name = [String]()
