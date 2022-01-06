@@ -25,26 +25,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-
-        
-            let appearance = UITabBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .systemOrange
-
-            let tabBarItemAppearance = UITabBarItemAppearance()
-            tabBarItemAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-            tabBarItemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            tabBarItemAppearance.normal.iconColor = .black
-            tabBarItemAppearance.selected.iconColor = .white
-            appearance.stackedLayoutAppearance = tabBarItemAppearance
-
-            tabBarController?.tabBar.standardAppearance = appearance
-        if #available(iOS 15.0, *) {
-            tabBarController?.tabBar.scrollEdgeAppearance = appearance
-        }
-
-
-        getCountries()
+        tabBarUI()
+        getCountries(host: ViewController.host, key: ViewController.key, url: "\(ViewController.uri)?offset=0&limit=10")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -52,14 +34,30 @@ class ViewController: UIViewController {
         savedCountries = UserDefaults.standard.stringArray(forKey: "savedCountriesName") ?? [String]()
         tableView.reloadData()
     }
+    
+    func tabBarUI() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemOrange
 
-    func getCountries() {
+        let tabBarItemAppearance = UITabBarItemAppearance()
+        tabBarItemAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        tabBarItemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        tabBarItemAppearance.normal.iconColor = .black
+        tabBarItemAppearance.selected.iconColor = .white
+        appearance.stackedLayoutAppearance = tabBarItemAppearance
+
+        tabBarController?.tabBar.standardAppearance = appearance
+        if #available(iOS 15.0, *) {
+            tabBarController?.tabBar.scrollEdgeAppearance = appearance
+        }
+    }
+
+    func getCountries(host: String, key: String, url: String) {
         let headers: HTTPHeaders = [
-            "x-rapidapi-host": ViewController.host,
-            "x-rapidapi-key": ViewController.key,
+            "x-rapidapi-host": host,
+            "x-rapidapi-key": key,
         ]
-
-        let url = "\(ViewController.uri)?offset=0&limit=10"
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON { countries in
             switch countries.result {
             case let .success(value):

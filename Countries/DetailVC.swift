@@ -21,14 +21,19 @@ class DetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        ccLabel.text = code
-        title = name ?? "Details"
-        getCountryDetails(countryCode: code ?? "error")
-        if SCArray.name.contains(name ?? "") {
-            savedButton.image = UIImage(named: "saved")
-        } else {
-            savedButton.image = UIImage(named: "unsaved")
+        if let countryCode = code {
+            ccLabel.text = countryCode
+            getCountryDetails(countryCode: countryCode, host: ViewController.host, key: ViewController.key, url: "\(ViewController.uri)/\(countryCode)")
         }
+        if let countryName = name {
+            title = countryName
+            if SCArray.name.contains(countryName) {
+                savedButton.image = UIImage(named: "saved")
+            } else {
+                savedButton.image = UIImage(named: "unsaved")
+            }
+        }
+
         countryImageView.isUserInteractionEnabled = false
         if #available(iOS 15.0, *) {
             var conf = UIButton.Configuration.plain()
@@ -51,12 +56,10 @@ class DetailVC: UIViewController {
     }
 
     @IBAction func detailButtonAction(_ sender: Any) {
-        if wikiDataId != nil || wikiDataId != "" {
-            if let wdi = wikiDataId {
-                let wdiUri = "https://www.wikidata.org/wiki/\(wdi)"
-                if let urlDetail = URL(string: wdiUri) {
-                    UIApplication.shared.open(urlDetail)
-                }
+        if let wdi = wikiDataId {
+            let wdiUri = "https://www.wikidata.org/wiki/\(wdi)"
+            if let urlDetail = URL(string: wdiUri) {
+                UIApplication.shared.open(urlDetail)
             }
         }
     }
@@ -81,14 +84,13 @@ class DetailVC: UIViewController {
         UserDefaults.standard.synchronize()
     }
 
-    func getCountryDetails(countryCode: String) {
+    func getCountryDetails(countryCode: String, host: String, key: String, url: String) {
         if countryCode != "error" && countryCode != "" {
             let headers: HTTPHeaders = [
-                "x-rapidapi-host": ViewController.host,
-                "x-rapidapi-key": ViewController.key,
+                "x-rapidapi-host": host,
+                "x-rapidapi-key": key,
             ]
 
-            let url = "\(ViewController.uri)/\(countryCode)"
             AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON { details in
                 switch details.result {
                 case let .success(value):
@@ -97,17 +99,15 @@ class DetailVC: UIViewController {
                     if dic?["data"] != nil {
                         self.wikiDataId = dic?["data"]?["wikiDataId"].stringValue
                         let flagImageUri = dic?["data"]?["flagImageUri"].stringValue
-                        if flagImageUri != nil || flagImageUri != "" {
-                            if let fiu = flagImageUri {
-                                var svgUrlRemote: URL {
-                                    let path = fiu
-                                    return URL(string: path)!
-                                }
-                                let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: self.countryImageView.frame.width, height: self.countryImageView.frame.height))
-                                let request = URLRequest(url: svgUrlRemote)
-                                webView.load(request)
-                                self.countryImageView.addSubview(webView)
+                        if let fiu = flagImageUri {
+                            var svgUrlRemote: URL {
+                                let path = fiu
+                                return URL(string: path)!
                             }
+                            let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: self.countryImageView.frame.width, height: self.countryImageView.frame.height))
+                            let request = URLRequest(url: svgUrlRemote)
+                            webView.load(request)
+                            self.countryImageView.addSubview(webView)
                         }
                     }
                 case let .failure(e):

@@ -23,8 +23,13 @@ class SavedCountriesVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         name.removeAll(keepingCapacity: false)
         code.removeAll(keepingCapacity: false)
-        name = UserDefaults.standard.stringArray(forKey: "savedCountriesName") ?? [String]()
-        code = UserDefaults.standard.stringArray(forKey: "savedCountriesCode") ?? [String]()
+        if let savedCountriesName = UserDefaults.standard.stringArray(forKey: "savedCountriesName") {
+            name = savedCountriesName
+        }
+
+        if let savedCountriesCode = UserDefaults.standard.stringArray(forKey: "savedCountriesCode") {
+            code = savedCountriesCode
+        }
         tableView.reloadData()
     }
 }

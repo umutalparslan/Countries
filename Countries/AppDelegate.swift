@@ -12,9 +12,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        SCArray.name = UserDefaults.standard.stringArray(forKey: "savedCountriesName") ?? [String]()
-        SCArray.code = UserDefaults.standard.stringArray(forKey: "savedCountriesCode") ?? [String]()
-        UserDefaults.standard.synchronize()
+        if let savedCountriesName = UserDefaults.standard.stringArray(forKey: "savedCountriesName") {
+            SCArray.name = savedCountriesName
+        }
+        
+        if let savedCountriesCode = UserDefaults.standard.stringArray(forKey: "savedCountriesCode") {
+            SCArray.code = savedCountriesCode
+        }
         return true
     }
 
